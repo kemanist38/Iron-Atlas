@@ -13,4 +13,57 @@ model User {
   username  String?
   password  String
   createdAt DateTime @default(now())
+  players   GamePlayer[]
+}
+
+model Game {
+  id        Int          @id @default(autoincrement())
+  name      String
+  ownerId   Int
+  owner     User         @relation(fields: [ownerId], references: [id])
+  status    String       @default("lobby")
+  createdAt DateTime     @default(now())
+  players   GamePlayer[]
+  regions   Region[]
+  turns     Turn[]
+}
+
+model GamePlayer {
+  id       Int    @id @default(autoincrement())
+  game     Game   @relation(fields: [gameId], references: [id])
+  gameId   Int
+  user     User   @relation(fields: [userId], references: [id])
+  userId   Int
+  ready    Boolean @default(false)
+}
+
+model Region {
+  id       Int    @id @default(autoincrement())
+  game     Game   @relation(fields: [gameId], references: [id])
+  gameId   Int
+  name     String
+  ownerId  Int?
+  owner    User?  @relation(fields: [ownerId], references: [id])
+  units    Unit[]
+}
+
+model Unit {
+  id       Int    @id @default(autoincrement())
+  region   Region @relation(fields: [regionId], references: [id])
+  regionId Int
+  type     String
+  count    Int    @default(1)
+  ownerId  Int?
+  owner    User?  @relation(fields: [ownerId], references: [id])
+}
+
+model Turn {
+  id        Int      @id @default(autoincrement())
+  game      Game     @relation(fields: [gameId], references: [id])
+  gameId    Int
+  playerId  Int?
+  player    GamePlayer? @relation(fields: [playerId], references: [id])
+  actions   Json
+  createdAt DateTime @default(now())
+  resolved  Boolean  @default(false)
 }
