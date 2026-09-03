@@ -1,0 +1,53 @@
+name: Seed Full World
+on:
+  workflow_dispatch:
+
+jobs:
+  seed_full:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgis/postgis:15-3.4
+        ports:
+          - 5432:5432
+        env:
+          POSTGRES_USER: iron
+          POSTGRES_PASSWORD: ironpass
+          POSTGRES_DB: iron_atlas
+        options: >-
+          --health-cmd="pg_isready -U iron -d iron_atlas" --health-interval=10s --health-timeout=5s --health-retries=5
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+      - name: Wait for Postgres
+        run: |
+          echo "Waiting for Postgres..."
+          for i in {1..30}; do
+            pg_isready -h localhost -p 5432 -U iron && break
+            sleep 1
+          done
+      - name: Install backend deps
+        working-directory: backend
+        run: |
+          npm ci
+      - name: Generate Prisma Client
+        working-directory: backend
+        env:
+          DATABASE_URL: postgresql://iron:ironpass@localhost:5432/iron_atlas?schema=public
+        run: |
+          npx prisma generate
+      - name: Run migrations
+        working-directory: backend
+        env:
+          DATABASE_URL: postgresql://iron:ironpass@localhost:5432/iron_atlas?schema=public
+        run: |
+          npx prisma migrate deploy || true
+      - name: Run full seed
+        working-directory: backend
+        env:
+          DATABASE_URL: postgresql://iron:ironpass@localhost:5432/iron_atlas?schema=public
+        run: |
+          npm run seed:full
