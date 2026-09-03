@@ -1,5 +1,16 @@
 version: '3.8'
 services:
+  postgres:
+    image: postgres:15
+    environment:
+      POSTGRES_USER: iron
+      POSTGRES_PASSWORD: ironpass
+      POSTGRES_DB: iron_atlas
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    ports:
+      - '5432:5432'
+
   backend:
     build: ./backend
     ports:
@@ -8,6 +19,15 @@ services:
       - ./backend:/usr/src/app
     environment:
       - NODE_ENV=development
+      - DATABASE_URL=postgresql://iron:ironpass@postgres:5432/iron_atlas?schema=public
+      - JWT_SECRET=${JWT_SECRET}
+      - MAIL_HOST=${MAIL_HOST}
+      - MAIL_PORT=${MAIL_PORT}
+      - MAIL_USER=${MAIL_USER}
+      - MAIL_PASS=${MAIL_PASS}
+    depends_on:
+      - postgres
+
   frontend:
     build: ./frontend
     ports:
@@ -16,3 +36,8 @@ services:
       - ./frontend:/usr/src/app
     environment:
       - NODE_ENV=development
+    depends_on:
+      - backend
+
+volumes:
+  postgres-data:
