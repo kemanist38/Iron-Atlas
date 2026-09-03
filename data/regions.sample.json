@@ -1,0 +1,41 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": { "name": "Türkiye" },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [26.0, 41.0], [36.0, 41.0], [44.0, 39.0], [44.0, 36.0], [35.0, 36.0], [26.0, 36.0], [26.0, 41.0]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": { "name": "Brezilya" },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [-74.0, -33.0], [-34.0, -33.0], [-34.0, 5.0], [-60.0, 5.0], [-74.0, -10.0], [-74.0, -33.0]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": { "name": "Avustralya" },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [112.0, -44.0], [154.0, -44.0], [154.0, -10.0], [112.0, -10.0], [112.0, -44.0]
+          ]
+        ]
+      }
+    }
+  ]
+}
