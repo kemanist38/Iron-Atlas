@@ -32,7 +32,7 @@ jobs:
       - name: Install backend deps
         working-directory: backend
         run: |
-          npm ci
+          npm install
       - name: Generate Prisma Client
         working-directory: backend
         env:
