@@ -24,18 +24,6 @@
           ]
         ]
       }
-    },
-    {
-      "type": "Feature",
-      "properties": { "name": "Avustralya" },
-      "geometry": {
-        "type": "Polygon",
-        "coordinates": [
-          [
-            [112.0, -44.0], [154.0, -44.0], [154.0, -10.0], [112.0, -10.0], [112.0, -44.0]
-          ]
-        ]
-      }
     }
   ]
 }

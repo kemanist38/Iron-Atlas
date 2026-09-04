@@ -1,3 +1,8 @@
+import express from 'express'
+import { prisma } from './prisma'
+
+const router = express.Router()
+
 // GET /api/games/:id/regions
 router.get('/:id/regions', async (req, res) => {
   try {
@@ -9,3 +14,5 @@ router.get('/:id/regions', async (req, res) => {
     return res.status(500).json({ error: 'Bölgeler alınamadı' })
   }
 })
+
+export default router
